@@ -34,81 +34,54 @@ class _PreviewPlayerState extends State<PreviewPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<EditorBloc, EditorState>(
-      listenWhen: (previous, current) =>
-          previous.playheadPosition != current.playheadPosition ||
-          previous.isPlaying != current.isPlaying,
-      listener: (context, state) {
-        if (_controller != null && _isInitialized) {
-          if (state.isPlaying) {
-            _controller!.play();
-            _controller!.seekTo(state.playheadPosition);
-          } else {
-            _controller!.pause();
-            _controller!.seekTo(state.playheadPosition);
-          }
-        }
-      },
-      child: BlocBuilder<EditorBloc, EditorState>(
-        builder: (context, state) {
-          // Find the current layer at playhead position
-          final currentLayer = state.project?.layers.where((layer) {
-            return state.playheadPosition >= layer.startTime &&
-                state.playheadPosition < layer.endTime;
-          }).firstOrNull;
+    return BlocBuilder<EditorBloc, EditorState>(
+      builder: (context, state) {
+        // Find the current layer at playhead position
+        final currentLayer = state.project?.layers.where((layer) {
+          return state.playheadPosition >= layer.startTime &&
+              state.playheadPosition < layer.endTime;
+        }).firstOrNull;
 
-          return Container(
-            color: Colors.black,
-            child: Center(
-              child: currentLayer != null
-                  ? _buildVideoPreview(currentLayer.sourcePath, state)
-                  : _buildPlaceholder(),
-            ),
-          );
-        },
-      ),
+        return Container(
+          color: Colors.black,
+          child: Center(
+            child: currentLayer != null && currentLayer.sourcePath.isNotEmpty
+                ? _buildVideoPreview(context, currentLayer.sourcePath, state)
+                : _buildPlaceholder(),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildVideoPreview(String path, EditorState state) {
+  Widget _buildVideoPreview(BuildContext context, String path, EditorState state) {
     if (_controller?.dataSource != path) {
       _initializeVideo(path);
     }
 
     if (_isInitialized && _controller != null) {
-      // Adjust for layer start time
-      final currentLayer = state.project?.layers.where((layer) {
-        return state.playheadPosition >= layer.startTime &&
-            state.playheadPosition < layer.endTime;
-      }).firstOrNull;
-
-      if (currentLayer != null) {
-        final relativePosition = state.playheadPosition - currentLayer.startTime;
-        _controller!.seekTo(relativePosition);
-      }
-
       return AspectRatio(
         aspectRatio: _controller!.value.aspectRatio,
         child: VideoPlayer(_controller!),
       );
     }
 
-    return const CircularProgressIndicator();
+    return const CircularProgressIndicator(color: Colors.white);
   }
 
   Widget _buildPlaceholder() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.movie_outlined,
-          size: 64,
+        const Icon(
+          Icons.video_library_outlined,
+          size: 80,
           color: Colors.white24,
         ),
         const SizedBox(height: 16),
         Text(
           'Add media to preview',
-          style: TextStyle(color: Colors.white38),
+          style: TextStyle(color: Colors.white38, fontSize: 16),
         ),
       ],
     );
