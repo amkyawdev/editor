@@ -11,54 +11,62 @@ class EditingToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      color: Theme.of(context).cardColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildToolButton(
-            context,
-            icon: Icons.add_circle_outline,
-            label: 'Add Media',
-            onPressed: () => _addMedia(context),
-          ),
-          _buildToolButton(
-            context,
-            icon: Icons.content_cut,
-            label: 'Split',
-            onPressed: () => _splitClip(context),
-          ),
-          _buildToolButton(
-            context,
-            icon: Icons.speed,
-            label: 'Speed',
-            onPressed: () => _showSpeedDialog(context),
-          ),
-          _buildToolButton(
-            context,
-            icon: Icons.text_fields,
-            label: 'Text',
-            onPressed: () => _addText(context),
-          ),
-          _buildToolButton(
-            context,
-            icon: Icons.filter,
-            label: 'Effects',
-            onPressed: () => _showEffectsDialog(context),
-          ),
-          _buildToolButton(
-            context,
-            icon: Icons.music_note,
-            label: 'Audio',
-            onPressed: () => _addAudio(context),
-          ),
-          _buildToolButton(
-            context,
-            icon: Icons.zoom_in,
-            label: 'Zoom',
-            onPressed: () => _toggleZoom(context),
-          ),
-        ],
+      height: 80,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        border: Border(
+          top: BorderSide(color: Colors.white12, width: 1),
+        ),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildToolButton(
+              context,
+              icon: Icons.add_circle_outline,
+              label: 'Add Media',
+              onPressed: () => _addMedia(context),
+            ),
+            _buildToolButton(
+              context,
+              icon: Icons.content_cut,
+              label: 'Split',
+              onPressed: () => _splitClip(context),
+            ),
+            _buildToolButton(
+              context,
+              icon: Icons.speed,
+              label: 'Speed',
+              onPressed: () => _showSpeedDialog(context),
+            ),
+            _buildToolButton(
+              context,
+              icon: Icons.text_fields,
+              label: 'Text',
+              onPressed: () => _addText(context),
+            ),
+            _buildToolButton(
+              context,
+              icon: Icons.filter,
+              label: 'Effects',
+              onPressed: () => _showEffectsDialog(context),
+            ),
+            _buildToolButton(
+              context,
+              icon: Icons.music_note,
+              label: 'Audio',
+              onPressed: () => _addAudio(context),
+            ),
+            _buildToolButton(
+              context,
+              icon: Icons.zoom_in,
+              label: 'Zoom',
+              onPressed: () => _toggleZoom(context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -71,17 +79,21 @@ class EditingToolbar extends StatelessWidget {
   }) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 24, color: Colors.white70),
-            const SizedBox(height: 2),
+            Icon(icon, size: 28, color: Colors.white),
+            const SizedBox(height: 4),
             Text(
               label,
-              style: const TextStyle(fontSize: 10, color: Colors.white54),
+              style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500),
             ),
           ],
         ),
