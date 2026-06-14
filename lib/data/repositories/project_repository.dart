@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../domain/entities/project_model.dart';
 import '../../data/datasources/local_storage.dart';
 

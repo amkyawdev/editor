@@ -126,6 +126,9 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
           totalDuration: maxEndTime,
           modifiedAt: DateTime.now(),
         ),
+        selectedLayerId: event.layer.id,
+        playheadPosition: event.layer.startTime,
+        isPlaying: true,
       ));
     });
 
